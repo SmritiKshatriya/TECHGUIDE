@@ -6,29 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tech Guide – Home</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
 <!--Header Section Starts-->
   <header>
-    <img src="./images/TechGuide_Logo.png" alt="Tech Guide Logo" id="logo">
-    <h1 class="Logo-text">Tech Guide</h1>
-    <nav>
-        <ul id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="quiz.html">Take Quiz</a></li>
-            <li><a href="roadmaps.html">Roadmaps</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img  src="images/TechGuide_Logo.png" alt="Logo" style="border:2px solid white;border-radius:10px;" width="80" height="80" class="me-2">
+        <span class="fs-4" style="color: white; font-weight:bold;">Tech Guide</span>
+      </a>
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="./index.html" class="nav-link active" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Take Quiz</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Roadmaps</a></li>
+        
+      </ul>
+      </header>
+    </div></div>
   </header>
 <!--Header Section Ends-->
 
 <!-- Main Content Starts -->
   <main>
     <section class="hero">
-        <div class="Hero-content">
-            <h2>Discover Your Ideal Tech Path</h2>
-            <p>Take our personalized quiz to find the perfect technology career path that matches your interests, skills, and goals. Get customized roadmaps and resources to guide your learning journey.</p>
-            <a href="quiz.html" class="btn"><button type="submit">Start Quiz</button></a>
+        <div class="px-4 py-5 my-5 text-center">
+          
+          <h1 class="display-5 fw-bold text-body-emphasis">Discover your ideal Tech Path</h1>
+          <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+              Take our personalized quiz to find the perfect technology career path that matches your interests, skills, and goals. Get customized roadmaps and resources to guide your learning journey.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <button type="button" class="btn btn-primary btn-lg px-4 gap-3" fdprocessedid="80tq1g" style="background-color: #333;">
+            Take Quiz
+          </button>
+          
+            </div>
+          </div>
         </div>
       
     </section>
@@ -36,9 +52,23 @@
 <!--Main Content Ends-->
 
 <!-- Footer Section Starts -->
-  <footer>
-    <p>© 2025 Tech Guide</p>
+<div class="footer">
+  <footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2 text-body-secondary">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2 text-body-secondary">Take Quiz</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2 text-body-secondary">Roadmaps</a>
+      </li>
+     
+    </ul>
+    <p class="text-center text-body-secondary">© Tech Guide</p>
   </footer>
+</div>
 <!-- Footer Section Ends -->
 </body>
 </html>
