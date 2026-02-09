@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Guide | Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quiz/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Tech Guide</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+        </ul>
+    </nav>
+
+    <div class="quiz-container">
+        <h2>Create an Account</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Django renders the inputs here automatically -->
+            {{ form.as_p }}
+            
+            <button type="submit" class="btn submit-btn">Sign Up</button>
+        </form>
+        <p style="text-align: center; margin-top: 10px;">
+            Already have an account? <a href="{% url 'login' %}">Login here</a>
+        </p>
+    </div>
+
+</body>
+</html>

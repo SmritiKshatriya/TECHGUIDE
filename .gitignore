@@ -1,0 +1,15 @@
+# Ignore the Virtual Environment
+venv/
+
+# Ignore the Database
+db.sqlite3
+
+# Ignore Compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore OS generated files
+.DS_Store
+
+# Ignore the AI Model (Optional, usually these are too big for git)
+*.pkl
