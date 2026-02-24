@@ -8,6 +8,16 @@
 </head>
 <body>
 
+    <script>
+        // Check if user is logged in before allowing quiz
+        const user = localStorage.getItem('user');
+        if (!user) {
+            // Save intended destination and redirect to login
+            localStorage.setItem('redirectAfterLogin', '/quiz/');
+            window.location.href = '/login/';
+        }
+    </script>
+
 <nav class="navbar">
     <a href="/" class="navbar-logo">Tech Guide 🚀</a>
     <div class="navbar-links">
@@ -152,8 +162,10 @@
             const data = await res.json();
 
             if (res.ok) {
-                localStorage.setItem('quizResults', JSON.stringify(data));
-                window.location.href = '/results/';
+                localStorage.setItem('user', JSON.stringify(data.user));
+                const redirect = localStorage.getItem('redirectAfterLogin') || '/quiz/';
+                localStorage.removeItem('redirectAfterLogin');
+                window.location.href = redirect;
             } else {
                 throw new Error('Server error');
             }

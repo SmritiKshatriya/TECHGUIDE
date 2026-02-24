@@ -118,7 +118,9 @@
                 localStorage.setItem('user', JSON.stringify(data.user));
                 successMsg.textContent = 'Account created! Redirecting...';
                 successMsg.style.display = 'block';
-                setTimeout(() => window.location.href = '/', 1500);
+                const redirect = localStorage.getItem('redirectAfterLogin') || '/';
+                localStorage.removeItem('redirectAfterLogin');
+                setTimeout(() => window.location.href = redirect, 1500);
             } else {
                 errorMsg.textContent = data.error;
                 errorMsg.style.display = 'block';
