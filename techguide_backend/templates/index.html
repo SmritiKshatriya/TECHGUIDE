@@ -8,15 +8,53 @@
 </head>
 <body>
 
-<nav class="navbar">
-    <a href="/" class="navbar-logo">Tech Guide 🚀</a>
-    <div class="navbar-links">
-        <a href="/">Home</a>
-        <a href="/quiz/">Quiz</a>
-        <a href="/roadmaps/">Roadmaps</a>
-        <a href="/quiz/" class="btn-primary">Start Quiz</a>
-    </div>
-</nav>
+    <nav class="navbar">
+        <a href="/" class="navbar-logo">Tech Guide 🚀</a>
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/quiz/">Quiz</a>
+            <a href="/roadmaps/">Roadmaps</a>
+            <div id="auth-nav">
+                <a href="/login/" class="btn-outline" style="margin-right:0.5rem;">Log In</a>
+                <a href="/signup/" class="btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        // Show username in navbar if logged in
+        const user = localStorage.getItem('user');
+        if (user) {
+            const userData = JSON.parse(user);
+            document.getElementById('auth-nav').innerHTML = `
+                <span style="color:#94A3B8; margin-right:1rem;">Hi, ${userData.username} 👋</span>
+                <button onclick="handleLogout()" class="btn-outline">Log Out</button>
+            `;
+        }
+    
+        async function handleLogout() {
+            await fetch('/api/accounts/logout/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') }
+            });
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
+    
+        function getCookie(name) {
+            let value = null;
+            if (document.cookie) {
+                document.cookie.split(';').forEach(c => {
+                    c = c.trim();
+                    if (c.startsWith(name + '=')) {
+                        value = decodeURIComponent(c.substring(name.length + 1));
+                    }
+                });
+            }
+            return value;
+        }
+    </script>
+    
 
 <div class="hero">
     <h1>Find Your Perfect Tech Path</h1>

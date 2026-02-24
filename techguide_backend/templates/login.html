@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — TechGuide</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="navbar-logo">Tech Guide 🚀</a>
+    <div class="navbar-links">
+        <a href="/">Home</a>
+        <a href="/quiz/">Quiz</a>
+        <a href="/roadmaps/">Roadmaps</a>
+        <a href="/signup/" class="btn-primary">Sign Up</a>
+    </div>
+</nav>
+
+<div style="max-width:420px; margin:5rem auto; padding:0 1.5rem;">
+    <div style="background:#1E293B; border:1px solid #334155; border-radius:1rem; padding:2rem;">
+        <h1 style="font-size:1.75rem; font-weight:800; margin-bottom:0.5rem;">Welcome back</h1>
+        <p style="color:#94A3B8; margin-bottom:2rem;">Log in to your TechGuide account</p>
+
+        <div id="error-msg" style="display:none; background:#EF444420; border:1px solid #EF4444; color:#EF4444; padding:0.75rem; border-radius:0.5rem; margin-bottom:1rem; font-size:0.9rem;"></div>
+
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; color:#94A3B8; font-size:0.875rem; margin-bottom:0.5rem;">Username</label>
+            <input type="text" id="username" placeholder="Enter your username"
+                style="width:100%; padding:0.75rem 1rem; background:#0F172A; border:1px solid #334155; border-radius:0.5rem; color:white; font-size:1rem; outline:none; box-sizing:border-box;">
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+            <label style="display:block; color:#94A3B8; font-size:0.875rem; margin-bottom:0.5rem;">Password</label>
+            <input type="password" id="password" placeholder="Enter your password"
+                style="width:100%; padding:0.75rem 1rem; background:#0F172A; border:1px solid #334155; border-radius:0.5rem; color:white; font-size:1rem; outline:none; box-sizing:border-box;">
+        </div>
+
+        <button onclick="handleLogin()" id="login-btn"
+            style="width:100%; padding:0.875rem; background:#3B82F6; color:white; border:none; border-radius:0.5rem; font-size:1rem; font-weight:600; cursor:pointer;">
+            Log In
+        </button>
+
+        <p style="text-align:center; color:#94A3B8; margin-top:1.5rem; font-size:0.9rem;">
+            Don't have an account? 
+            <a href="/signup/" style="color:#3B82F6;">Sign up</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function getCookie(name) {
+        let value = null;
+        if (document.cookie) {
+            document.cookie.split(';').forEach(c => {
+                c = c.trim();
+                if (c.startsWith(name + '=')) {
+                    value = decodeURIComponent(c.substring(name.length + 1));
+                }
+            });
+        }
+        return value;
+    }
+
+    async function handleLogin() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-msg');
+        const btn = document.getElementById('login-btn');
+
+        errorMsg.style.display = 'none';
+
+        if (!username || !password) {
+            errorMsg.textContent = 'Please fill in all fields';
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        btn.textContent = 'Logging in...';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch('/api/accounts/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = '/';
+            } else {
+                errorMsg.textContent = data.error;
+                errorMsg.style.display = 'block';
+                btn.textContent = 'Log In';
+                btn.disabled = false;
+            }
+        } catch(err) {
+            errorMsg.textContent = 'Something went wrong. Please try again.';
+            errorMsg.style.display = 'block';
+            btn.textContent = 'Log In';
+            btn.disabled = false;
+        }
+    }
+
+    // Allow Enter key to submit
+    document.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+</script>
+
+</body>
+</html>
