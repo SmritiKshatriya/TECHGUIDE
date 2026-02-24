@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Domain, QuizQuestion, QuizChoice, ChoiceDomainScore
-from .serializers import QuizQuestionSerializer
+from .serializers import QuizQuestionSerializer, DomainSerializer
 
 
 class QuizQuestionsAPIView(APIView):
@@ -17,9 +17,7 @@ class QuizQuestionsAPIView(APIView):
 @method_decorator(csrf_exempt, name='dispatch')
 class SubmitQuizAPIView(APIView):
     def post(self, request):
-        print("RECEIVED DATA:", request.data)
         answers = request.data.get('answers', {})
-        print("ANSWERS:", answers)
 
         if not answers:
             return Response(
@@ -27,7 +25,6 @@ class SubmitQuizAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Calculate score per domain
         domain_scores = {}
         for question_id, choice_id in answers.items():
             try:
@@ -47,7 +44,6 @@ class SubmitQuizAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Get top 3 domains
         max_score = max(domain_scores.values())
         sorted_domains = sorted(
             domain_scores.keys(),
@@ -68,5 +64,11 @@ class SubmitQuizAPIView(APIView):
                 'compatibility': compatibility,
             })
 
-        print("RESULTS:", results)
         return Response({'results': results})
+
+
+class DomainsListAPIView(APIView):
+    def get(self, request):
+        domains = Domain.objects.filter(is_active=True)
+        serializer = DomainSerializer(domains, many=True)
+        return Response(serializer.data)

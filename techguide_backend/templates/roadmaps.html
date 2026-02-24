@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmaps — TechGuide</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="navbar-logo">Tech Guide 🚀</a>
+    <div class="navbar-links">
+        <a href="/">Home</a>
+        <a href="/quiz/">Quiz</a>
+        <a href="/roadmaps/">Roadmaps</a>
+        <a href="/quiz/" class="btn-primary">Take Quiz</a>
+    </div>
+</nav>
+
+<div class="container" style="padding: 4rem 2rem;">
+    <div style="text-align:center; margin-bottom:3rem;">
+        <h1 style="font-size:2.5rem; font-weight:800; margin-bottom:1rem;">
+            Explore Tech Roadmaps
+        </h1>
+        <p style="color:#94A3B8; font-size:1.1rem;">
+            Choose a domain and follow a structured path from beginner to expert
+        </p>
+    </div>
+
+    <div id="domains-grid" class="domains-grid">
+        <p style="color:#94A3B8;">Loading domains...</p>
+    </div>
+</div>
+
+<script>
+    async function loadDomains() {
+        try {
+            const res = await fetch('/api/quiz/domains/');
+            const domains = await res.json();
+            const grid = document.getElementById('domains-grid');
+            grid.innerHTML = '';
+
+            domains.forEach(domain => {
+                const card = document.createElement('div');
+                card.className = 'domain-card';
+                card.innerHTML = `
+                    <div class="emoji">${domain.icon_emoji}</div>
+                    <h3>${domain.name}</h3>
+                    <p>${domain.description}</p>
+                    <a href="/roadmap/?domain=${domain.slug}" 
+                       style="color:${domain.color_hex}">
+                        View Roadmap →
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        } catch(err) {
+            document.getElementById('domains-grid').innerHTML = 
+                '<p style="color:#EF4444;">Failed to load domains.</p>';
+        }
+    }
+
+    loadDomains();
+</script>
+
+</body>
+</html>

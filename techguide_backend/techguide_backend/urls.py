@@ -26,4 +26,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/quiz/', include('quiz.urls')),
     path('api/roadmaps/', include('roadmaps.urls')),
+    path('roadmaps/', TemplateView.as_view(template_name='roadmaps.html')),
 ]
