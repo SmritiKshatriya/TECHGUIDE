@@ -229,8 +229,8 @@ h1, h2, h3, h4 {
   background: var(--accent);
   margin-left: 4px;
   vertical-align: middle;
-  animation: blink 2.5s steps(1) infinite;
-  -webkit-animation: blink 2.5s steps(1) infinite;
+  animation: blink 5s steps(1) infinite;
+  -webkit-animation: blink 5s steps(1) infinite;
 }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
