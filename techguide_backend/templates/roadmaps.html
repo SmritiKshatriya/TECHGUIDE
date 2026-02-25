@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmaps — TechGuide</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Roadmaps — TechGuide</title>
+  <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
-    <a href="/" class="navbar-logo">Tech Guide 🚀</a>
-    <div class="navbar-links">
-        <a href="/">Home</a>
-        <a href="/quiz/">Quiz</a>
-        <a href="/roadmaps/">Roadmaps</a>
-        <a href="/quiz/" class="btn-primary">Take Quiz</a>
-    </div>
+  <a href="/" class="navbar-logo">
+    <img src="/static/images/logo.png" alt="TechGuide">
+  </a>
+  <div class="navbar-links">
+    <a href="/">Home</a>
+    <a href="/quiz/">Quiz</a>
+    <a href="/roadmaps/" class="active">Roadmaps</a>
+    <div id="auth-nav" class="nav-user-info"></div>
+  </div>
 </nav>
 
-<div class="container" style="padding: 4rem 2rem;">
-    <div style="text-align:center; margin-bottom:3rem;">
-        <h1 style="font-size:2.5rem; font-weight:800; margin-bottom:1rem;">
-            Explore Tech Roadmaps
-        </h1>
-        <p style="color:#94A3B8; font-size:1.1rem;">
-            Choose a domain and follow a structured path from beginner to expert
-        </p>
-    </div>
-
-    <div id="domains-grid" class="domains-grid">
-        <p style="color:#94A3B8;">Loading domains...</p>
-    </div>
+<!-- PAGE HERO -->
+<div class="page-hero animate-in">
+  <h1>Explore Tech Roadmaps</h1>
+  <p>Choose a domain and follow a structured path from beginner to expert</p>
 </div>
 
-<script>
-    async function loadDomains() {
-        try {
-            const res = await fetch('/api/quiz/domains/');
-            const domains = await res.json();
-            const grid = document.getElementById('domains-grid');
-            grid.innerHTML = '';
+<!-- DOMAINS GRID -->
+<div class="section" style="padding-top:0;">
+  <div class="container">
+    <div id="domains-grid" class="domains-grid">
+      <!-- Skeleton placeholders while loading -->
+      <div class="domain-card" style="opacity:0.4;">
+        <div class="skeleton" style="width:48px;height:48px;border-radius:50%;margin-bottom:12px;"></div>
+        <div class="skeleton" style="width:60%;height:20px;margin-bottom:8px;"></div>
+        <div class="skeleton" style="width:90%;height:14px;margin-bottom:4px;"></div>
+        <div class="skeleton" style="width:75%;height:14px;"></div>
+      </div>
+      <div class="domain-card" style="opacity:0.3;">
+        <div class="skeleton" style="width:48px;height:48px;border-radius:50%;margin-bottom:12px;"></div>
+        <div class="skeleton" style="width:55%;height:20px;margin-bottom:8px;"></div>
+        <div class="skeleton" style="width:85%;height:14px;margin-bottom:4px;"></div>
+        <div class="skeleton" style="width:70%;height:14px;"></div>
+      </div>
+      <div class="domain-card" style="opacity:0.2;">
+        <div class="skeleton" style="width:48px;height:48px;border-radius:50%;margin-bottom:12px;"></div>
+        <div class="skeleton" style="width:65%;height:20px;margin-bottom:8px;"></div>
+        <div class="skeleton" style="width:80%;height:14px;margin-bottom:4px;"></div>
+        <div class="skeleton" style="width:65%;height:14px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-            domains.forEach(domain => {
-                const card = document.createElement('div');
-                card.className = 'domain-card';
-                card.innerHTML = `
-                    <div class="emoji">${domain.icon_emoji}</div>
-                    <h3>${domain.name}</h3>
-                    <p>${domain.description}</p>
-                    <a href="/roadmap/?domain=${domain.slug}" 
-                       style="color:${domain.color_hex}">
-                        View Roadmap →
-                    </a>
-                `;
-                grid.appendChild(card);
-            });
-        } catch(err) {
-            document.getElementById('domains-grid').innerHTML = 
-                '<p style="color:#EF4444;">Failed to load domains.</p>';
-        }
-    }
+<!-- FOOTER -->
+<footer class="footer">
+  TechGuide © 2026 — Built for aspiring developers 🚀
+</footer>
 
-    loadDomains();
-</script>
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+
+<script src="/static/js/main.js"></script>
+<script src="/static/js/roadmaps.js"></script>
 
 </body>
 </html>

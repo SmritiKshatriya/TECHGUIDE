@@ -1,89 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Results — TechGuide</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Results — TechGuide</title>
+  <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
-    <a href="/" class="navbar-logo">Tech Guide 🚀</a>
-    <div class="navbar-links">
-        <a href="/">Home</a>
-        <a href="/quiz/">Quiz</a>
-        <a href="/roadmaps/">Roadmaps</a>
-        <a href="/quiz/" class="btn-primary">Retake Quiz</a>
-    </div>
+  <a href="/" class="navbar-logo">
+    <img src="/static/images/logo.png" alt="TechGuide">
+  </a>
+  <div class="navbar-links">
+    <a href="/">Home</a>
+    <a href="/quiz/">Quiz</a>
+    <a href="/roadmaps/">Roadmaps</a>
+    <div id="auth-nav" class="nav-user-info"></div>
+  </div>
 </nav>
 
-<div class="results-container">
-    <div class="results-header">
-        <div class="big-icon">🎯</div>
-        <h1>Your Tech Path Results</h1>
-        <p>Based on your answers, here are your top recommended domains</p>
-    </div>
+<!-- RESULTS -->
+<div class="results-wrapper">
+  <div class="results-header">
+    <div class="trophy">🎯</div>
+    <h1>Your Tech Path Results</h1>
+    <p>Based on your answers, here are your top recommended domains</p>
+  </div>
 
-    <div id="results-container"></div>
+  <div id="results-list"></div>
 
-    <div class="retake-section">
-        <p>Not happy with your results?</p>
-        <a href="/quiz/" class="btn-outline">Retake the Quiz</a>
-    </div>
+  <div class="retake-section">
+    <p>Want to explore different answers?</p>
+    <a href="/quiz/" class="btn btn-outline btn-lg">Retake the Quiz</a>
+  </div>
 </div>
 
-<script>
-    const raw = localStorage.getItem('quizResults');
-    if (!raw) {
-        window.location.href = '/quiz/';
-    }
+<!-- FOOTER -->
+<footer class="footer">
+  TechGuide © 2026 — Built for aspiring developers 🚀
+</footer>
 
-    const data = JSON.parse(raw);
-    const results = data.results;
-    const container = document.getElementById('results-container');
-    const ranks = ['🥇 Best Match', '🥈 Second Match', '🥉 Third Match'];
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 
-    results.forEach((domain, index) => {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-
-        card.innerHTML = `
-            <div class="result-card-top">
-                <span class="rank-label">${ranks[index]}</span>
-                <span class="compatibility-pct" style="color:${domain.color_hex}">
-                    ${domain.compatibility}%
-                </span>
-            </div>
-            <div class="domain-name-row">
-                <span class="domain-emoji">${domain.icon_emoji}</span>
-                <span class="domain-name">${domain.name}</span>
-            </div>
-            <div class="compat-bar-bg">
-                <div class="compat-bar-fill" 
-                     style="background-color:${domain.color_hex}"
-                     data-width="${domain.compatibility}">
-                </div>
-            </div>
-            <a href="/roadmap/?domain=${domain.slug}" 
-               class="roadmap-btn"
-               style="color:${domain.color_hex}; border-color:${domain.color_hex}">
-                View ${domain.name} Roadmap →
-            </a>
-        `;
-
-        container.appendChild(card);
-
-        // Animate in
-        setTimeout(() => {
-            card.classList.add('visible');
-            setTimeout(() => {
-                const bar = card.querySelector('[data-width]');
-                bar.style.width = bar.dataset.width + '%';
-            }, 300);
-        }, index * 250);
-    });
-</script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/results.js"></script>
 
 </body>
 </html>

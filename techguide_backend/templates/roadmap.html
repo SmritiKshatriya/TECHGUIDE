@@ -1,139 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap — TechGuide</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap — TechGuide</title>
+  <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
-    <a href="/" class="navbar-logo">Tech Guide 🚀</a>
-    <div class="navbar-links">
-        <a href="/">Home</a>
-        <a href="/quiz/">Quiz</a>
-        <a href="/roadmaps/">Roadmaps</a>
-        <a href="/quiz/" class="btn-primary">Take Quiz</a>
-    </div>
+  <a href="/" class="navbar-logo">
+    <img src="/static/images/logo.png" alt="TechGuide">
+  </a>
+  <div class="navbar-links">
+    <a href="/">Home</a>
+    <a href="/quiz/">Quiz</a>
+    <a href="/roadmaps/" class="active">Roadmaps</a>
+    <div id="auth-nav" class="nav-user-info"></div>
+  </div>
 </nav>
 
-<div class="roadmap-page">
-    <div id="loading">Loading roadmap...</div>
-    <div id="roadmap-content" style="display:none;">
-        <div style="margin-bottom:2rem;">
-            <h1 id="domain-title" style="font-size:2rem; font-weight:800;"></h1>
-            <p style="color:#94A3B8; margin-top:0.5rem;">
-                Your structured learning path from beginner to expert
-            </p>
-        </div>
-        <div id="levels-container"></div>
-    </div>
+<!-- ROADMAP -->
+<div class="roadmap-wrapper">
+  <div class="roadmap-header">
+    <p style="font-size:0.875rem; color:var(--muted); margin-bottom:8px;">
+      <a href="/roadmaps/" style="color:var(--accent);">← All Roadmaps</a>
+    </p>
+    <h1 id="roadmap-title">Loading…</h1>
+    <p>Your structured learning path from beginner to expert</p>
+  </div>
+
+  <div id="roadmap-loading" style="text-align:center; padding:48px 0; color:var(--muted);">
+    <div class="loading-spinner" style="margin:0 auto 16px;"></div>
+    Loading roadmap…
+  </div>
+
+  <div id="roadmap-content" style="display:none;"></div>
 </div>
 
-<script>
-    const levelNames = {
-        1: '🌱 Level 1 — Foundations (0-3 months)',
-        2: '🚀 Level 2 — Beginner (3-6 months)',
-        3: '⚡ Level 3 — Intermediate (6-12 months)',
-        4: '🔥 Level 4 — Advanced (12-18 months)',
-        5: '👑 Level 5 — Expert (18+ months)'
-    };
+<!-- FOOTER -->
+<footer class="footer">
+  TechGuide © 2026 — Built for aspiring developers 🚀
+</footer>
 
-    async function loadRoadmap() {
-        // Get domain from URL e.g. /roadmap/?domain=web-development
-        const params = new URLSearchParams(window.location.search);
-        const domain = params.get('domain') || 'web-development';
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 
-        try {
-            const res = await fetch('/api/roadmaps/?domain=' + domain);
-            const steps = await res.json();
-
-            if (!steps.length) {
-                document.getElementById('loading').textContent = 
-                    'No roadmap found for this domain yet.';
-                return;
-            }
-
-            // Set page title from first step's domain
-            document.getElementById('domain-title').textContent = 
-                domain.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-
-            // Group steps by level
-            const grouped = {};
-            steps.forEach(step => {
-                if (!grouped[step.level]) grouped[step.level] = [];
-                grouped[step.level].push(step);
-            });
-
-            // Render each level
-            const container = document.getElementById('levels-container');
-            Object.keys(grouped).sort().forEach(level => {
-                const section = document.createElement('div');
-                section.className = 'level-section';
-                section.innerHTML = `
-                    <div class="level-title">${levelNames[level] || 'Level ' + level}</div>
-                `;
-
-                grouped[level].forEach(step => {
-                    const item = document.createElement('div');
-                    item.className = 'step-item';
-
-                    // Build resources html
-                    let resourcesHtml = '';
-                    if (step.resources && step.resources.length) {
-                        resourcesHtml = '<div class="resources-list">';
-                        step.resources.forEach(r => {
-                            const freeClass = r.is_free ? 'free-chip' : '';
-                            const freeTag = r.is_free ? '✓ FREE' : '💰 PAID';
-                            resourcesHtml += `
-                                <a href="${r.url}" target="_blank" 
-                                   class="resource-chip ${freeClass}">
-                                    ${freeTag} · ${r.platform} · ${r.title}
-                                </a>
-                            `;
-                        });
-                        resourcesHtml += '</div>';
-                    } else {
-                        resourcesHtml = '<p style="color:#475569; font-size:0.8rem; margin-top:0.75rem;">No resources added yet</p>';
-                    }
-
-                    item.innerHTML = `
-                        <div class="step-header">
-                            <span class="step-title">
-                                ${step.is_milestone ? '⭐ ' : ''}${step.title}
-                            </span>
-                            <span class="step-weeks">${step.estimated_weeks}w</span>
-                        </div>
-                        <div class="step-desc">
-                            <p style="margin-bottom:0.75rem;">${step.description}</p>
-                            ${resourcesHtml}
-                        </div>
-                    `;
-
-                    // Toggle expand on click
-                    item.onclick = (e) => {
-                        // Don't toggle if user clicked a resource link
-                        if (e.target.closest('a')) return;
-                        item.classList.toggle('open');
-                    };
-                    section.appendChild(item);
-                });
-
-                container.appendChild(section);
-            });
-
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('roadmap-content').style.display = 'block';
-
-        } catch (err) {
-            document.getElementById('loading').textContent = 
-                'Failed to load roadmap. Please try again.';
-        }
-    }
-
-    loadRoadmap();
-</script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/roadmap.js"></script>
 
 </body>
 </html>
