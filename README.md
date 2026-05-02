@@ -194,17 +194,6 @@ All API endpoints are prefixed with `/api/`.
 
 ---
 
-## Screenshots
-
-_Add screenshots of the main pages once available._
-
-- **Landing Page** — `screenshots/landing.png`
-- **Quiz** — `screenshots/quiz.png`
-- **Results** — `screenshots/results.png`
-- **Roadmap** — `screenshots/roadmap.png`
-
----
-
 ## Author
 
 **Smriti Kshatriya**
